@@ -1,14 +1,18 @@
-use biodivine_lib_param_bn::symbolic_async_graph::{GraphColoredVertices, GraphColors};
+use crate::aeon::algo_xie_beerel::xie_beerel_attractors;
+use algo_interleaved_transition_guided_reduction::interleaved_transition_guided_reduction;
+use biodivine_lib_param_bn::symbolic_async_graph::{
+    GraphColoredVertices, GraphColors, SymbolicAsyncGraph,
+};
 use std::collections::HashMap;
-use std::sync::atomic::{AtomicU32, AtomicBool};
-use std::sync::Mutex;
+use std::sync::atomic::{AtomicBool, AtomicU32};
+use std::sync::{Arc, Mutex};
 
 /// **(internal)** Utility methods for the behaviour `Class`.
 mod _impl_class;
 /// **(internal)** Implementation of `Behaviour` classification in `Classifier`.
 mod _impl_classifier;
-mod _impl_progress_tracker;
 mod _impl_graph_task_context;
+mod _impl_progress_tracker;
 pub mod algo_interleaved_transition_guided_reduction;
 pub mod algo_saturated_reachability;
 pub mod algo_xie_beerel;
@@ -44,3 +48,18 @@ pub struct GraphTaskContext {
     progress: ProgressTracker,
 }
 
+/// A helper function for computing attractors without unnecessary fluff with cancellation
+/// and progress tracking.
+pub fn compute_attractors(graph: &SymbolicAsyncGraph) -> Vec<GraphColoredVertices> {
+    let task = GraphTaskContext::new();
+    let (universe, variables) =
+        interleaved_transition_guided_reduction(&task, graph, graph.mk_unit_colored_vertices());
+    let result = Arc::new(Mutex::new(Vec::new()));
+    xie_beerel_attractors(&task, graph, &universe, &variables, |component| {
+        result.lock().unwrap().push(component)
+    });
+    {
+        let x = result.lock().unwrap().to_vec();
+        x
+    } // Safely read result from a locked mutex.
+}

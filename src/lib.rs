@@ -1,5 +1,5 @@
-use biodivine_lib_param_bn::{VariableId, BinaryOp};
-use biodivine_lib_param_bn::symbolic_async_graph::{GraphColoredVertices, GraphColors, SymbolicContext};
+use biodivine_lib_param_bn::symbolic_async_graph::{GraphColoredVertices, GraphColors};
+use biodivine_lib_param_bn::{BinaryOp, VariableId};
 use std::collections::HashSet;
 
 /// A copy of aeon attractor algorithms.
@@ -10,14 +10,14 @@ use std::collections::HashSet;
 pub mod aeon;
 
 /*
-    This file is the root of the library. Here, we can implement the actual functionality.
-    (Although, it would be best to eventually separate the implementation into smaller sub-modules)
+   This file is the root of the library. Here, we can implement the actual functionality.
+   (Although, it would be best to eventually separate the implementation into smaller sub-modules)
 
-    Note that the underscore (_) prefix on all function parameters is just to avoid warnings
-    about unused parameters.
- */
+   Note that the underscore (_) prefix on all function parameters is just to avoid warnings
+   about unused parameters.
+*/
 
-enum PhenotypeFormula {
+pub enum PhenotypeFormula {
     // The recursive data-type for the formula will have a similar declaration
     VarTrue(VariableId),
     Negation(Box<PhenotypeFormula>),
@@ -30,7 +30,10 @@ enum PhenotypeFormula {
 ///
 /// The function also takes a hash set of variable names which are currently declared in the
 /// corresponding model.
-pub fn read_phenotype_formula(_formula: &str, _model_variables: &HashSet<String>) -> Result<PhenotypeFormula, String> {
+pub fn read_phenotype_formula(
+    _formula: &str,
+    _model_variables: &HashSet<String>,
+) -> Result<PhenotypeFormula, String> {
     unimplemented!("TODO");
 }
 
@@ -42,19 +45,22 @@ pub fn read_phenotype_formula(_formula: &str, _model_variables: &HashSet<String>
 /// `SymbolicAsyncGraph`) for mapping between Boolean network variables and Bdd variables
 /// (or symbolic sets). But we will add this when we have a better idea how the algorithm
 /// will look.
-pub fn test_phenotype(_phenotype: &PhenotypeFormula, _attractor: GraphColoredVertices) -> GraphColors {
+pub fn test_phenotype(
+    _phenotype: &PhenotypeFormula,
+    _attractor: &GraphColoredVertices,
+) -> GraphColors {
     unimplemented!("TODO");
 }
 
 /*
-    You can use this to include unit-tests in the module file.
- */
+   You can use this to include unit-tests in the module file.
+*/
 #[cfg(test)]
 mod tests {
-    use super::*;
 
     #[test]
     fn test_xyz() {
-        assert!(true);  // Some condition
+        //let result = super::read_phenotype_formula(unimplemented!(), unimplemented!());
+        //assert!(result.is_ok());  // Some condition
     }
 }

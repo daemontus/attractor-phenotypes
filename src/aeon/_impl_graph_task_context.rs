@@ -1,5 +1,5 @@
-use crate::aeon::ProgressTracker;
 use crate::aeon::GraphTaskContext;
+use crate::aeon::ProgressTracker;
 use biodivine_lib_param_bn::symbolic_async_graph::{GraphColoredVertices, SymbolicAsyncGraph};
 use std::sync::atomic::{AtomicBool, Ordering};
 
