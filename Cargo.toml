@@ -1,0 +1,17 @@
+[package]
+name = "biodivine-attractor-phenotypes"
+version = "0.1.0"
+authors = ["Vojtěch Škaroupka <485232@mail.muni.cz>", "Samuel Pastva <daemontus@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+biodivine-lib-bdd = "0.2.1"
+biodivine-lib-param-bn = "0.1.0"
+
+[dev-dependencies]
+
+[features]
+
+# Enable rich docs for some online docs autogen services.
+[package.metadata.docs.rs]
+rustdoc-args = ["--html-in-header", "./res/docs-head.html"]
